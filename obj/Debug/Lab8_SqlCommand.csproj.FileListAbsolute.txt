@@ -1,0 +1,11 @@
+C:\nguyenduyhung\Lab8_SqlCommand\Lab8_SqlCommand\bin\Debug\Lab8_SqlCommand.exe.config
+C:\nguyenduyhung\Lab8_SqlCommand\Lab8_SqlCommand\bin\Debug\Lab8_SqlCommand.exe
+C:\nguyenduyhung\Lab8_SqlCommand\Lab8_SqlCommand\bin\Debug\Lab8_SqlCommand.pdb
+C:\nguyenduyhung\Lab8_SqlCommand\Lab8_SqlCommand\obj\Debug\Lab8_SqlCommand.csproj.AssemblyReference.cache
+C:\nguyenduyhung\Lab8_SqlCommand\Lab8_SqlCommand\obj\Debug\Lab8_SqlCommand.Form1.resources
+C:\nguyenduyhung\Lab8_SqlCommand\Lab8_SqlCommand\obj\Debug\Lab8_SqlCommand.Properties.Resources.resources
+C:\nguyenduyhung\Lab8_SqlCommand\Lab8_SqlCommand\obj\Debug\Lab8_SqlCommand.csproj.GenerateResource.cache
+C:\nguyenduyhung\Lab8_SqlCommand\Lab8_SqlCommand\obj\Debug\Lab8_SqlCommand.csproj.CoreCompileInputs.cache
+C:\nguyenduyhung\Lab8_SqlCommand\Lab8_SqlCommand\obj\Debug\Lab8_SqlCommand.exe
+C:\nguyenduyhung\Lab8_SqlCommand\Lab8_SqlCommand\obj\Debug\Lab8_SqlCommand.pdb
+C:\nguyenduyhung\Lab8_SqlCommand\Lab8_SqlCommand\obj\Debug\Lab8_SqlCommand.exe.config
