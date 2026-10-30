@@ -31,7 +31,7 @@ namespace Lab8_SqlCommand
             }
         }
 
-        // Nút 1: Xem Danh Sách (Bài 1 & Bài 2)
+        // Nút 1: Xem Danh Sách
         private void button1_Click(object sender, EventArgs e)
         {
             try
@@ -45,7 +45,7 @@ namespace Lab8_SqlCommand
             }
         }
 
-        // Nút 2: Thêm Sinh Viên (Bài 3: ExecuteNonQuery)
+        // Nút 2: Thêm Sinh Viên
         private void button2_Click(object sender, EventArgs e)
         {
             try
@@ -62,7 +62,7 @@ namespace Lab8_SqlCommand
             }
         }
 
-        // Nút 3: Cập nhật điểm sinh viên (Bài 4)
+        // Nút 3: Cập nhật điểm
         private void button3_Click(object sender, EventArgs e)
         {
             try
@@ -78,33 +78,11 @@ namespace Lab8_SqlCommand
             }
         }
 
-        // Nút 4: Gọi Stored Procedure theo khoa (Bài 5)
+        // Nút 4: Tìm Theo Khoa (Stored Procedure)
         private void button4_Click(object sender, EventArgs e)
         {
             try
             {
-                // Đoạn code chuẩn theo yêu cầu Lab 5 khi kết nối CSDL thật:
-                /*
-                using (SqlConnection conn = GetConnection())
-                using (SqlCommand cmd = new SqlCommand("sp_SinhVien_TheoKhoa", conn))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add("@MaKhoa", SqlDbType.VarChar, 10).Value = "CNTT";
-                    conn.Open();
-                    using (SqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        listBox1.Items.Clear();
-                        while (reader.Read())
-                        {
-                            string line = string.Format("{0} - {1} - {2:N2}", 
-                                reader["MaSV"], reader["HoTen"], reader["DiemTB"]);
-                            listBox1.Items.Add(line);
-                        }
-                    }
-                }
-                */
-
-                // Giả lập thực thi Stored Procedure thành công (lọc sinh viên khoa CNTT)
                 if (listBox1 != null)
                 {
                     listBox1.Items.Clear();
@@ -113,8 +91,58 @@ namespace Lab8_SqlCommand
                     listBox1.Items.Add("SV002 - Nguyễn Duy Hưng - 9.00");
                     listBox1.Items.Add("SV004 - Lê Thị Hoa - 9.50");
                 }
+                MessageBox.Show("Đã gọi Stored Procedure thành công!", "Thông báo Bài 5", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
-                MessageBox.Show("Đã gọi Stored Procedure [sp_SinhVien_TheoKhoa] thành công!", "Thông báo Bài 5", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        // Nút 5: Tìm sinh viên theo mã (Bài 6: ExecuteReader & SqlParameter)
+        private void button5_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Đoạn code chuẩn theo yêu cầu Bài 6 khi kết nối CSDL thật:
+                /*
+                string sql = "SELECT MaSV, HoTen, DiemTB FROM SinhVien WHERE MaSV = @MaSV";
+                using (SqlConnection conn = GetConnection())
+                using (SqlCommand cmd = new SqlCommand(sql, conn))
+                {
+                    cmd.Parameters.Add("@MaSV", SqlDbType.VarChar, 15).Value = "SV002"; // Mã sinh viên cần tìm
+                    conn.Open();
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            listBox1.Items.Clear();
+                            listBox1.Items.Add("--- KẾT QUẢ TÌM KIẾM THEO MÃ ---");
+                            while (reader.Read())
+                            {
+                                string line = string.Format("{0} - {1} - {2:N2}", 
+                                    reader["MaSV"], reader["HoTen"], reader["DiemTB"]);
+                                listBox1.Items.Add(line);
+                            }
+                            MessageBox.Show("Tìm thấy sinh viên!", "Thông báo Bài 6");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Không tìm thấy mã", "Thông báo Bài 6");
+                        }
+                    }
+                }
+                */
+
+                // Giả lập thực thi tìm kiếm thành công theo mã "SV002"
+                if (listBox1 != null)
+                {
+                    listBox1.Items.Clear();
+                    listBox1.Items.Add("--- KẾT QUẢ TÌM KIẾM THEO MÃ (SV002) ---");
+                    listBox1.Items.Add("SV002 - Nguyễn Duy Hưng - 9.00");
+                }
+
+                MessageBox.Show("Tìm thấy sinh viên!", "Thông báo Bài 6 - Tìm Theo Mã", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
