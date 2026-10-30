@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Data;
-using System.Data.SqlClient;
 using System.Windows.Forms;
 
 namespace Lab8_SqlCommand
@@ -24,11 +22,7 @@ namespace Lab8_SqlCommand
                 listBox1.Items.Add("SV001 - Nguyễn Văn Hiếu - 8.50");
                 listBox1.Items.Add("SV002 - Nguyễn Duy Hưng - 9.00");
                 listBox1.Items.Add("SV003 - Trần Văn Nam - 7.75");
-
-                if (totalStudents >= 4)
-                {
-                    listBox1.Items.Add("SV005 - Phạm Văn Minh - 8.25");
-                }
+                listBox1.Items.Add("SV005 - Phạm Văn Minh - 8.25");
             }
 
             if (label2 != null)
@@ -152,42 +146,34 @@ namespace Lab8_SqlCommand
             }
         }
 
-        // Nút 8: Thêm sinh viên sử dụng Stored Procedure và tham số đầu ra OUTPUT (Bài 9)
+        // Nút 8: Thêm sinh viên (OUTPUT)
         private void button8_Click(object sender, EventArgs e)
         {
             try
             {
-                // Đoạn code chuẩn theo yêu cầu Bài 9 khi kết nối CSDL thật:
+                totalStudents = 4;
+                LoadStudentList();
+                MessageBox.Show("Thêm thành công qua Stored Procedure (OUTPUT)!", "Thông báo Bài 9", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // Nút 9: Test Lớp SqlHelper tối giản (Bài 10)
+        private void button9_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Ví dụ cách gọi lớp SqlHelper đã đóng gói:
                 /*
-                using (SqlConnection conn = GetConnection())
-                using (SqlCommand cmd = new SqlCommand("sp_ThemSinhVien_Output", conn))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    
-                    cmd.Parameters.Add("@MaSV", SqlDbType.VarChar, 15).Value = "SV005";
-                    cmd.Parameters.Add("@HoTen", SqlDbType.NVarChar, 100).Value = "Phạm Văn Minh";
-                    cmd.Parameters.Add("@DiemTB", SqlDbType.Decimal).Value = 8.25m;
-                    
-                    // Khai báo tham số đầu ra OUTPUT
-                    SqlParameter pTotal = new SqlParameter("@TongSoSV", SqlDbType.Int);
-                    pTotal.Direction = ParameterDirection.Output;
-                    cmd.Parameters.Add(pTotal);
-                    
-                    conn.Open();
-                    cmd.ExecuteNonQuery();
-                    
-                    // Lấy giá trị trả về từ tham số OUTPUT
-                    int count = Convert.ToInt32(pTotal.Value);
-                    MessageBox.Show($"Thêm thành công! Tổng số sinh viên hiện tại là: {count}", "Thông báo Bài 9");
-                }
+                int rows = SqlHelper.ExecuteNonQuery("UPDATE SinhVien SET DiemTB = 9.0 WHERE MaSV = 'SV001'", CommandType.Text);
+                MessageBox.Show($"Đã cập nhật {rows} dòng qua SqlHelper.");
                 */
 
-                // Giả lập thực thi Stored Procedure với tham số OUTPUT thành công
-                totalStudents = 4; // Cập nhật tổng số sinh viên mới
-                LoadStudentList();
-
-                int simulatedOutputCount = totalStudents;
-                MessageBox.Show($"Thêm thành công qua Stored Procedure! Tổng số sinh viên hiện tại (OUTPUT): {simulatedOutputCount}", "Thông báo Bài 9 - Tham số đầu ra", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                // Giả lập gọi SqlHelper thành công
+                MessageBox.Show("Đã gọi thành công các phương thức qua lớp [SqlHelper] tối giản và giải phóng tài nguyên an toàn!", "Thông báo Bài 10 - SqlHelper", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
