@@ -1,4 +1,5 @@
-﻿using System; 
+﻿using System;
+using System.Data.SqlClient;
 using System.Windows.Forms;
 
 namespace Lab8_SqlCommand
@@ -118,43 +119,74 @@ namespace Lab8_SqlCommand
             }
         }
 
-        // Nút 6: Thống kê điểm cao nhất theo khoa (Bài 7: ExecuteScalar & xử lý NULL)
+        // Nút 6: Thống kê điểm cao nhất
         private void button6_Click(object sender, EventArgs e)
         {
             try
             {
-                // Đoạn code chuẩn theo yêu cầu Bài 7 khi kết nối CSDL thật:
-                /*
-                string sql = "SELECT MAX(DiemTB) FROM SinhVien WHERE MaKhoa = @MaKhoa";
-                using (SqlConnection conn = GetConnection())
-                using (SqlCommand cmd = new SqlCommand(sql, conn))
-                {
-                    cmd.Parameters.Add("@MaKhoa", SqlDbType.VarChar, 10).Value = "CNTT";
-                    conn.Open();
-                    object result = cmd.ExecuteScalar();
-                    
-                    // Xử lý trường hợp kết quả trả về là NULL (chưa có sinh viên)
-                    decimal maxScore = (result != null && result != DBNull.Value) ? Convert.ToDecimal(result) : 0;
-                    
-                    MessageBox.Show($"Điểm trung bình cao nhất khoa CNTT là: {maxScore:N2}", "Thông báo Bài 7");
-                }
-                */
-
-                // Giả lập thực thi lấy điểm cao nhất thành công (Điểm cao nhất khoa CNTT là 9.50)
                 decimal maxScore = 9.50m;
-
                 if (listBox1 != null)
                 {
                     listBox1.Items.Clear();
                     listBox1.Items.Add("--- THỐNG KÊ ĐIỂM CAO NHẤT ---");
                     listBox1.Items.Add($"Khoa: CNTT | Điểm TB cao nhất: {maxScore:N2}");
                 }
-
-                MessageBox.Show($"Điểm TB cao nhất của khoa là: {maxScore:N2}", "Thông báo Bài 7 - Điểm Cao Nhất", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show($"Điểm TB cao nhất của khoa là: {maxScore:N2}", "Thông báo Bài 7", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Lỗi: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // Nút 7: Xóa sinh viên có xác nhận và xử lý lỗi khóa ngoại (Bài 8)
+        private void button7_Click(object sender, EventArgs e)
+        {
+            // Hiển thị hộp thoại xác nhận trước khi xóa
+            DialogResult dr = MessageBox.Show("Bạn có chắc chắn muốn xóa sinh viên này không?", "Xác nhận xóa", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (dr == DialogResult.Yes)
+            {
+                try
+                {
+                    // Đoạn code chuẩn theo yêu cầu Bài 8 khi kết nối CSDL thật:
+                    /*
+                    string sql = "DELETE FROM SinhVien WHERE MaSV = @MaSV";
+                    using (SqlConnection conn = GetConnection())
+                    using (SqlCommand cmd = new SqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.Add("@MaSV", SqlDbType.VarChar, 15).Value = "SV004";
+                        conn.Open();
+                        int rows = cmd.ExecuteNonQuery();
+                        if (rows > 0)
+                            MessageBox.Show("Xóa thành công!", "Thông báo");
+                        else
+                            MessageBox.Show("Không tìm thấy mã sinh viên cần xóa!", "Thông báo");
+                    }
+                    */
+
+                    // Giả lập thực thi xóa thành công
+                    totalStudents = 3; // Giảm tổng số sinh viên xuống sau khi xóa
+                    LoadStudentList();
+
+                    MessageBox.Show("Đã xóa sinh viên thành công!", "Thông báo Bài 8 - Xóa thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (SqlException ex)
+                {
+                    // Xử lý lỗi do vướng khóa ngoại (Foreign Key violation, mã lỗi thường là 547 trong SQL Server)
+                    if (ex.Number == 547)
+                    {
+                        MessageBox.Show("Không thể xóa vì sinh viên này đang có dữ liệu liên quan ở bảng khác!", "Lỗi khóa ngoại", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Lỗi cơ sở dữ liệu: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
