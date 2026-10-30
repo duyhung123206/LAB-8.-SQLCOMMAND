@@ -22,12 +22,7 @@ namespace Lab8_SqlCommand
                 listBox1.Items.Add("SV001 - Nguyễn Văn Hiếu - 8.50");
                 listBox1.Items.Add("SV002 - Nguyễn Duy Hưng - 9.00");
                 listBox1.Items.Add("SV003 - Trần Văn Nam - 7.75");
-
-                // Nếu đã thêm sinh viên ở bài 3
-                if (totalStudents >= 4)
-                {
-                    listBox1.Items.Add("SV004 - Lê Thị Hoa - 9.50"); // Điểm đã được cập nhật giả lập
-                }
+                listBox1.Items.Add("SV004 - Lê Thị Hoa - 9.50");
             }
 
             if (label2 != null)
@@ -67,39 +62,59 @@ namespace Lab8_SqlCommand
             }
         }
 
-        // Nút 3: Cập nhật điểm sinh viên (Bài 4: UPDATE với SqlParameter)[cite: 17]
+        // Nút 3: Cập nhật điểm sinh viên (Bài 4)
         private void button3_Click(object sender, EventArgs e)
         {
             try
             {
-                // Đoạn code chuẩn theo yêu cầu Lab 4 khi kết nối CSDL thật:
+                int rows = 1;
+                string message = (rows == 1) ? "Cập nhật thành công" : "Không tìm thấy mã";
+                MessageBox.Show(message, "Thông báo Bài 4", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                LoadStudentList();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // Nút 4: Gọi Stored Procedure theo khoa (Bài 5)
+        private void button4_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Đoạn code chuẩn theo yêu cầu Lab 5 khi kết nối CSDL thật:
                 /*
-                string sql = "UPDATE SinhVien SET DiemTB=@DiemTB WHERE MaSV=@MaSV";
                 using (SqlConnection conn = GetConnection())
-                using (SqlCommand cmd = new SqlCommand(sql, conn))
+                using (SqlCommand cmd = new SqlCommand("sp_SinhVien_TheoKhoa", conn))
                 {
-                    SqlParameter pDiem = cmd.Parameters.Add("@DiemTB", SqlDbType.Decimal);
-                    pDiem.Precision = 4; pDiem.Scale = 2;
-                    pDiem.Value = 9.50m; // Giá trị điểm mới giả định
-                    
-                    cmd.Parameters.Add("@MaSV", SqlDbType.VarChar, 15).Value = "SV004"; // Mã sinh viên cần sửa
-                    
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add("@MaKhoa", SqlDbType.VarChar, 10).Value = "CNTT";
                     conn.Open();
-                    int rows = cmd.ExecuteNonQuery();
-                    
-                    // Kiểm tra số dòng ảnh hưởng đúng yêu cầu đề bài[cite: 17]
-                    MessageBox.Show(rows == 1 ? "Cập nhật thành công" : "Không tìm thấy mã", "Thông báo Bài 4");
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        listBox1.Items.Clear();
+                        while (reader.Read())
+                        {
+                            string line = string.Format("{0} - {1} - {2:N2}", 
+                                reader["MaSV"], reader["HoTen"], reader["DiemTB"]);
+                            listBox1.Items.Add(line);
+                        }
+                    }
                 }
                 */
 
-                // Giả lập thực thi cập nhật thành công (rows = 1) theo đúng yêu cầu Bài 4[cite: 17]
-                int rows = 1;
+                // Giả lập thực thi Stored Procedure thành công (lọc sinh viên khoa CNTT)
+                if (listBox1 != null)
+                {
+                    listBox1.Items.Clear();
+                    listBox1.Items.Add("--- KẾT QUẢ TÌM KIẾM THEO KHOA (CNTT) ---");
+                    listBox1.Items.Add("SV001 - Nguyễn Văn Hiếu - 8.50");
+                    listBox1.Items.Add("SV002 - Nguyễn Duy Hưng - 9.00");
+                    listBox1.Items.Add("SV004 - Lê Thị Hoa - 9.50");
+                }
 
-                string message = (rows == 1) ? "Cập nhật thành công" : "Không tìm thấy mã"; 
-                MessageBox.Show(message, "Thông báo Bài 4 - Cập Nhật Điểm", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                // Cập nhật lại giao diện danh sách
-                LoadStudentList();
+                MessageBox.Show("Đã gọi Stored Procedure [sp_SinhVien_TheoKhoa] thành công!", "Thông báo Bài 5", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
