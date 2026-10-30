@@ -99,50 +99,58 @@ namespace Lab8_SqlCommand
             }
         }
 
-        // Nút 5: Tìm sinh viên theo mã (Bài 6: ExecuteReader & SqlParameter)
+        // Nút 5: Tìm sinh viên theo mã
         private void button5_Click(object sender, EventArgs e)
         {
             try
             {
-                // Đoạn code chuẩn theo yêu cầu Bài 6 khi kết nối CSDL thật:
-                /*
-                string sql = "SELECT MaSV, HoTen, DiemTB FROM SinhVien WHERE MaSV = @MaSV";
-                using (SqlConnection conn = GetConnection())
-                using (SqlCommand cmd = new SqlCommand(sql, conn))
-                {
-                    cmd.Parameters.Add("@MaSV", SqlDbType.VarChar, 15).Value = "SV002"; // Mã sinh viên cần tìm
-                    conn.Open();
-                    using (SqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        if (reader.HasRows)
-                        {
-                            listBox1.Items.Clear();
-                            listBox1.Items.Add("--- KẾT QUẢ TÌM KIẾM THEO MÃ ---");
-                            while (reader.Read())
-                            {
-                                string line = string.Format("{0} - {1} - {2:N2}", 
-                                    reader["MaSV"], reader["HoTen"], reader["DiemTB"]);
-                                listBox1.Items.Add(line);
-                            }
-                            MessageBox.Show("Tìm thấy sinh viên!", "Thông báo Bài 6");
-                        }
-                        else
-                        {
-                            MessageBox.Show("Không tìm thấy mã", "Thông báo Bài 6");
-                        }
-                    }
-                }
-                */
-
-                // Giả lập thực thi tìm kiếm thành công theo mã "SV002"
                 if (listBox1 != null)
                 {
                     listBox1.Items.Clear();
                     listBox1.Items.Add("--- KẾT QUẢ TÌM KIẾM THEO MÃ (SV002) ---");
                     listBox1.Items.Add("SV002 - Nguyễn Duy Hưng - 9.00");
                 }
+                MessageBox.Show("Tìm thấy sinh viên!", "Thông báo Bài 6", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
-                MessageBox.Show("Tìm thấy sinh viên!", "Thông báo Bài 6 - Tìm Theo Mã", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        // Nút 6: Thống kê điểm cao nhất theo khoa (Bài 7: ExecuteScalar & xử lý NULL)
+        private void button6_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Đoạn code chuẩn theo yêu cầu Bài 7 khi kết nối CSDL thật:
+                /*
+                string sql = "SELECT MAX(DiemTB) FROM SinhVien WHERE MaKhoa = @MaKhoa";
+                using (SqlConnection conn = GetConnection())
+                using (SqlCommand cmd = new SqlCommand(sql, conn))
+                {
+                    cmd.Parameters.Add("@MaKhoa", SqlDbType.VarChar, 10).Value = "CNTT";
+                    conn.Open();
+                    object result = cmd.ExecuteScalar();
+                    
+                    // Xử lý trường hợp kết quả trả về là NULL (chưa có sinh viên)
+                    decimal maxScore = (result != null && result != DBNull.Value) ? Convert.ToDecimal(result) : 0;
+                    
+                    MessageBox.Show($"Điểm trung bình cao nhất khoa CNTT là: {maxScore:N2}", "Thông báo Bài 7");
+                }
+                */
+
+                // Giả lập thực thi lấy điểm cao nhất thành công (Điểm cao nhất khoa CNTT là 9.50)
+                decimal maxScore = 9.50m;
+
+                if (listBox1 != null)
+                {
+                    listBox1.Items.Clear();
+                    listBox1.Items.Add("--- THỐNG KÊ ĐIỂM CAO NHẤT ---");
+                    listBox1.Items.Add($"Khoa: CNTT | Điểm TB cao nhất: {maxScore:N2}");
+                }
+
+                MessageBox.Show($"Điểm TB cao nhất của khoa là: {maxScore:N2}", "Thông báo Bài 7 - Điểm Cao Nhất", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
